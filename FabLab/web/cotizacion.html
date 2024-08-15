@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plataforma fab lab</title>
+  <link rel="stylesheet" href="estilos.css">
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+  <script type="module" src="https://www.gstatic.com/firebasejs/9.8.1/firebase-storage.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.min.js"></script>
+</head>
+
+<body>
+  <!--Navbar-->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-center">
+      <a class="navbar-brand" href="#">
+        <img src="blanco.png" width="75" height="40">
+      </a>
+    </div>
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Inicio</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="pedidos.html">Pedidos</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="proveedores.html">Proveedores</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="resepcion.html">Recepción</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="cotizacion.html">Cotización</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="informe.html">Informe</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!--Cuerpo de la pgina / Pedidos-->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Nuevo ingreso</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <h5 id="lprecioM">Precio</h5>
+            <div class="mb-3">
+              <label for="recipient-name" class="col-form-label">Nombre:</label>
+              <input type="text" class="form-control" id="inputnombre">
+            </div>
+            <div class="mb-3">
+              <label for="message-text" class="col-form-label">Descripción:</label>
+              <textarea class="form-control" id="inputdescripcion"></textarea>
+            </div>
+            <div class="mb-3">
+              <!--Agregar tabla para los pedidos-->
+              <div class="table-responsive">
+                <table class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th>Material</th>
+                      <th>Ancho</th>
+                      <th>Largo</th>
+                      <th>Cantidad</th>
+                      <th>Tiempo</th>
+                      <th>Precio</th>
+                      <th>Eliminar</th>
+                    </tr>
+                  </thead>
+                  <tbody id="tbodyproducts">
+
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div>
+
+            </div>
+            <div class="mb-3">
+              <label for="message-text" class="col-form-label">Proyecto</label>
+              <select class="form-select" aria-label="Seleccione el tipo de cotización" id="selectProyecto">
+                <option selected>Seleccione el tipo de proyecto</option>
+                <option value="CIEM-XELA">CIEM-XELA</option>
+                <option value="CIEM-REFUGIO">CIEM-REFUGIO</option>
+                <option value="CIEM-SALCAJA">CIEM-SALCAJA</option>
+                <option value="CTEISA">CTEISA</option>
+                <option value="CIEM-SAN PEDRO NECTA">CIEM - SAN PEDRO NECTA</option>
+                <option value="DOCENTES">DOCENTES</option>
+                <option value="EXTERNO">EXTERNO</option>
+
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="message-text" class="col-form-label">Encargado:</label>
+              <!--Select para agregar 3 personas-->
+              <select class="form-select" aria-label="Seleccione el tipo de cotización" id="selectEncargado">
+                <option selected>Seleccione el encargado</option>
+                <option value="Marvin Tzul">Marvin Tzul</option>
+                <option value="Luis Colop">Luis Colop</option>
+                <option value="Natalia">Natalia </option>
+                <option value="Bayron Tonoc">Bayron Tonoc</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="message-text" class="col-form-label">Encargado:</label>
+              <select class="form-select" aria-label="Seleccione el tipo de cotización" id="selectGestion">
+                <option selected>Tipo de gestion</option>
+                <option value="Cotizacion">Cotizacion</option>
+                <option value="Pedido">Pedido</option>
+              </select>
+            </div>
+            <div>
+              <label for="message-text" class="col-form-label">Fecha:</label>
+              <input type="date" class="form-control" id="inputfecha">
+            </div>
+
+            <!-- <div>
+                <input type="file" id="photo">
+              </div>-->
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          <button type="button" class="btn btn-primary" id="btnsubir">Agregar cotización</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container mt-4 " id="ii"
+    style="width: 45%; margin-bottom:5em;float:left; margin-left:5em; margin-right:2em;">
+    <h1>Cotización</h1>
+
+    <h3 id="lprecio">Precio: Q.</h3>
+    <p id="lpreciou">Precio: Q.</p>
+    <p id="lcm">Cm2: </p>
+
+    <div>
+      <select class="form-select" aria-label="Seleccione el tipo de cotización" id="selectCalculo">
+        <option selected>Seleccione un tipo de cálculo</option>
+        <option value="1">Sólo material</option>
+        <option value="2">Material y láser</option>
+        <option value="3">Material, láser más IVA</option>
+        <option value="4">Material, cnc más IVA</option>
+        <option value="5">Tiempo laser</option>
+        <option value="6">Tiempo CNC</option>
+      </select>
+    </div>
+
+    <div class="mt-3">
+      <select class="form-select" aria-label="Seleccione el tipo de material" id="selectMaterial">
+        <option selected value="0">Seleccione un tipo de material</option>
+        <option value="MDF 3mm">MDF 3mm</option>
+        <option value="MDF 6mm">MDF 6mm</option>
+        <option value="MDF 1cm">MDF 1cm</option>
+        <option value="MDF 1pulgada">MDF 1pulgada</option>
+        <option value="Acrílico transparente 3mm">Acrílico transparente 3mm</option>
+        <option value="Acrílico transparente 6mm">Acrílico transparente 6mm</option>
+        <option value="Acrílico negro 3mm">Acrílico negro 3mm</option>
+        <option value="Acrílico blanco 3mm">Acrílico blanco 3mm</option>
+        <option value="PVC 3mm">PVC 3mm</option>
+        <option value="PVC 6mm">PVC 6mm</option>
+
+
+
+      </select>
+    </div>
+
+
+    <div>
+      <div class="mb-6">
+        <label for="exampleInputEmail1" class="form-label">Ancho</label>
+        <input type="email" class="form-control" id="inputancho" aria-describedby="emailHelp">
+
+      </div>
+      <div class="mb-3">
+        <label for="exampleInputEmail1" class="form-label">Largo</label>
+        <input type="email" class="form-control" id="inputlargo" aria-describedby="emailHelp">
+      </div>
+      <div class="mb-3">
+        <label for="exampleInputEmail1" class="form-label">Cantidad</label>
+        <input type="email" class="form-control" id="inputcantidad" aria-describedby="emailHelp">
+      </div>
+
+    </div>
+
+    <div id="divp2">
+      <h2>Tiempo</h2>
+      <div class="mb-6">
+        <label for="exampleInputEmail1" class="form-label">Tiempo</label>
+        <input type="text" class="form-control" id="inputtiempo" aria-describedby="emailHelp">
+      </div>
+
+
+
+    </div>
+    <div>
+      <h1>Cantidad</h1>
+      <label for="exampleInputEmail1" class="form-label">Cantidad</label>
+      <input type="text" class="form-control" id="inputCantidadG" aria-describedby="emailHelp">
+
+    </div>
+
+    <div class="mt-3">
+      <button id="btncalcular" class="btn btn-dark">Calcular</button>
+      <button id="btnagregar1" class="btn btn-dark">Agregar a la cotización</button>
+      <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#exampleModal"
+        data-bs-whatever="@mdo">Finalizar la cotización</button>
+    </div>
+
+
+
+
+
+
+
+  </div>
+  <div class="container ml-3 mt-3">
+    <h1>Materiales</h1>
+    <div>
+      <h4>Precio: Q.0.00</h4>
+      
+<div>
+
+
+      <label for="form-label">Material Adicional</label>
+      <input type="text" class="form-control" style="width: 30%; margin-bottom:1em; margin-top:1em;"
+        placeholder="Ingrese material adicional" id="inputMaterialA">
+        <label for="form-label">Cantidad</label>
+      <input type="text" class="form-control" style="width: 30%; margin-bottom:1em; margin-top:1em;"
+        placeholder="Ingrese precio adicional" id="inputCantidadA">
+        <label for="form-label">Precio individual</label>
+      <input type="text" class="form-control" style="width: 30%; margin-bottom:1em; margin-top:1em;"
+        placeholder="Ingrese precio adicional" id="inputPrecioIA">
+      </div>
+      <button id="btnadicional" class="btn btn-dark mb-3">Precio adicional</button>
+    </div>
+
+    <div class="table-responsive">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Material</th>
+            <th>Cantidad</th>
+            <th>Precio</th>
+            <th>Eliminar</th>
+          </tr>
+        </thead>
+        <tbody id="tbodyproducts2">
+
+        </tbody>
+      </table>
+    </div>
+
+    <button id="btndescargar">DESCARGAR</button>
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+      crossorigin="anonymous"></script>
+    <script src="cotizacion.js" type="module"></script>
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+
+</body>
+
+</html>

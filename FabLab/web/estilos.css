@@ -1,0 +1,10 @@
+.divpedido{
+    width: 25%; 
+    border-color:rgb(169, 167, 165);
+     border-width:3px;
+     border-style:solid;
+     padding:.7em;
+     float: left;
+     margin-right: 1em;
+     
+}
